@@ -6,18 +6,21 @@ const logger = require('./middleware/logger');
 const validator = require('./middleware/validator');
 const error404 = require('./error-handlers/404');
 const error500 = require('./error-handlers/500');
-
 const app = express();
-
 const PORT = process.env.PORT || 3001;
 
 app.use(logger);
-app.use(validator);
+app.use(express.json());
 
-app.use(error404);
+app.get('/person', validator, (request, response) => {
+  let name = request.query.name;
+  response.send(name);
+});
+
 app.use(error500);
+app.use(error404);
 
 module.exports = {
   app,
-  start: app.listen(3000, () => console.log(`Server Running on port ${PORT}`)),
+  start: app.listen(3001, () => console.log(`Server Running on port ${PORT}`)),
 };

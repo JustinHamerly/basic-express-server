@@ -2,4 +2,4 @@
 
 const app = require('./src/server');
 
-app.start();
+app.start;
