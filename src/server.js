@@ -15,7 +15,6 @@ app.use(logger);
 app.use(express.json());
 
 app.get('/person', validator, (request, response) => {
-  console.log(response);
   let name = request.query;
   response.send(name);
 });

@@ -5,7 +5,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const BirdModel = require('./bird');
 const TreeModel = require('./tree');
 
-let DATABASE_URL = process.env.DATABASE_URL;
+let DATABASE_URL = process.env.DATABASE_URL  || 'sqlite:memory' ;
 
 const options = process.env.NODE_ENV === 'production'
   ? {
