@@ -9,7 +9,9 @@ install with npm install
 
 ## Problem Domain
 
-Build a express server deployed to heroku that employs a get request, middleware, error handlers and tests.
+Build a express server deployed to heroku that employs a get request, middleware, error handlers and tests.  
+Create 2 SQL data models using the Sequelize library, and export those model instances  
+Models are configured with SQL dialect and can properly connect to database
 
 ## Links
 
