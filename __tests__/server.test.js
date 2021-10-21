@@ -12,7 +12,7 @@ describe('Testing our Server', () => {
     const response = await request.get('/person?name=justin');
 
     expect(response.status).toBe(200);
-    expect(response.text).toBe('justin');
+    expect(response.body.name).toBe('justin');
 
   });
 
