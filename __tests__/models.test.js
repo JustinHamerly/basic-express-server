@@ -1,7 +1,7 @@
 'use strict';
 
 const supertest = require('supertest');
-const { db, birds } = require('../src/model');
+const { db, birds, trees } = require('../src/model');
 const app = require('../src/server');
 const request = supertest(app.app);
 
@@ -47,6 +47,8 @@ describe('testing bird routes', () => {
 
     expect(response.id).toBe(1);
     expect(response.name).toBe('american white pelican');
+    expect(response.wingspan).toBe('8.5 feet');
+    expect(response.location).toBe('North America');
   });
 
   it('should update a specific bird in the database', async () =>{
@@ -72,4 +74,67 @@ describe('testing bird routes', () => {
     response = JSON.parse(response.res.text);
     expect(response).toStrictEqual({});
   });
+  
+});
+
+describe('testing tree routes', () => {
+
+  it('Should be able to create a tree', async () => {
+
+    const newTree0 = {'name': 'flowering dogwood', 'location': 'eastern north america and northern mexico', 'height':'6-20ft'};
+    const response = await request.post('/trees').send(newTree0);
+
+    expect(response.statusCode).toBe(201);
+    
+  });
+
+  it('should be able to get all the trees from the database', async () => {
+
+    const newTree1 = {'name': 'baobab', 'location': 'Africa', 'height': '16 - 98 feet'};
+    const newTree2 = {'name': 'narra', 'location': 'indonesia', 'height': '82 - 115 feet'};
+
+    await request.post('/trees').send(newTree1);
+    await request.post('/trees').send(newTree2);
+
+    const response = await request.get('/trees');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(3);
+
+  });
+
+  it('should be able to retrieve a specific tree from the database', async () => {
+    let response = await request.get('/trees/1');
+    expect(response.statusCode).toBe(200);
+    
+    response = JSON.parse(response.res.text);
+
+    expect(response.id).toBe(1);
+    expect(response.name).toBe('flowering dogwood');
+  });
+
+  it('should update a specific tree in the database', async () =>{
+    let response = await request.get('/birds/1');
+    response = JSON.parse(response.res.text);
+    expect(response.id).toBe(1);
+
+    const updatedTree = {'name': 'cornelian cherry', 'location': 'Europe and Western Asia', 'height':'15 feet'};
+
+    await request.put('/trees/1').send(updatedTree);
+
+    let updatedResponse = await request.get('/trees/1');
+    updatedResponse = JSON.parse(updatedResponse.res.text);
+
+    expect(updatedResponse.id).toBe(1);
+    expect(updatedResponse.name).toBe('cornelian cherry');
+    expect(updatedResponse.location).toBe('Europe and Western Asia');
+    expect(updatedResponse.height).toBe('15 feet');
+  });
+
+  it('should delete a tree by ID', async () => {
+    let response = await request.delete('/trees/1');
+    response = JSON.parse(response.res.text);
+    expect(response).toStrictEqual({});
+  });
+
 });

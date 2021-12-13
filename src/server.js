@@ -7,32 +7,26 @@ const logger = require('./middleware/logger');
 const validator = require('./middleware/validator');
 const error404 = require('./error-handlers/404');
 const error500 = require('./error-handlers/500');
-const birdFunctions = require('./routes/birdRoute');
-const treeFunctions = require('./routes/treeRoute');
+const categoryFunctions = require('./routes/categoryRoute');
+const productFunctions = require('./routes/productRoute');
 const app = express();
 
 app.use(logger);
 app.use(express.json());
 
-app.get('/person', validator, (request, response) => {
-  console.log(response);
-  let name = request.query;
-  response.send(name);
-});
+//category routes
+app.get('/category', categoryFunctions.getAllCategories);
+app.get('/category/:id', categoryFunctions.getACategory);
+app.post('/category', categoryFunctions.addACategory);
+app.put('/category/:id', categoryFunctions.updateCategory);
+app.delete('/category/:id', categoryFunctions.deleteACategory);
 
-//bird routes
-app.get('/birds', birdFunctions.getAllBirds);
-app.get('/birds/:id', birdFunctions.getABird);
-app.post('/birds', birdFunctions.addABird);
-app.put('/birds/:id', birdFunctions.updateBird);
-app.delete('/birds/:id', birdFunctions.deleteABird);
-
-//tree routes
-app.get('/trees', treeFunctions.getAllTrees);
-app.get('/trees/:id', treeFunctions.getATree);
-app.post('/trees', treeFunctions.addATree);
-app.put('/trees/:id', treeFunctions.updateTree);
-app.delete('/trees/:id', treeFunctions.deleteATree);
+//product routes
+app.get('/product', productFunctions.getAllProducts);
+app.get('/product/:id', productFunctions.getAProduct);
+app.post('/product', productFunctions.addAProduct);
+app.put('/product/:id', productFunctions.updateProduct);
+app.delete('/product/:id', productFunctions.deleteAProduct);
 
 app.use(error404);
 app.use(error500);
